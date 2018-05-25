@@ -1,9 +1,10 @@
 import json
 from typing import Union
+
 import attr
 
 
-def ensure(t):
+def ensure(t, allow_none=False):
     '''Returns a function that ensures a result of type t
     e.g. ensure(Location)(Location(1,2)) == ensure(Location)({'latitude': 1, 'longitude': 2})
 
@@ -14,6 +15,8 @@ def ensure(t):
             return t2
         elif isinstance(t2, dict):
             return t(**t2)
+        elif allow_none and t2 is None:
+            return None
         else:
             raise TypeError('Expected mapping or {}'.format(t))
     return check
